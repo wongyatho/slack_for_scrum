@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title><%= reportTitle %></title>
+
+	<head>
+		<style type="text/css">
+			body {
+				width: 1200px;
+				margin: 0;
+				padding: 0px;
+				font-size: 16px;
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: rgb(33, 33, 33);
+			}
+
+			.report-header {
+				background: rgb(55, 39, 114);
+				color: rgb(255, 255, 255);
+				padding: 15px;
+				padding-left: 200px;
+				box-sizing: border-box;
+				display: block;
+				position: relative;
+			}
+
+			.report-header .logo {
+				position: absolute;
+				top: 40px;
+				left: 15px;
+				width: 150px;
+			}
+
+			.report-footer {
+				background: rgb(55, 39, 114);
+				color: rgb(255, 255, 255);
+				padding: 15px;
+				box-sizing: border-box;
+				display: block;
+				position: relative;
+			}
+
+			.report-body {
+				width: 70%;
+				display: inline-block;
+				position: relative;
+				padding: 15px;
+				box-sizing: border-box;
+				vertical-align: top;
+			}
+
+			.report-body .table {
+				display: block;
+				font-family: sans-serif;
+				-webkit-font-smoothing: antialiased;
+				font-size: 115%;
+				overflow: auto;
+				width: auto;
+			}
+
+			th {
+				background-color: rgb(55, 39, 114);
+				color: white;
+				font-weight: normal;
+				padding: 20px 30px;
+				text-align: center;
+			}
+
+			td {
+				background-color: rgb(238, 238, 238);
+				color: rgb(111, 111, 111);
+				padding: 20px 30px;
+			}
+		</style>
+		<meta charset="utf-8">
+	</head>
+
+<body>
+	<div class="report-header">
+		<h1><%= reportTitle %></h1>
+		<p><%= reportDate %></p>
+	</div>
+	<div class="report-body">
+		<table class="flat-table">
+			<tr>
+				<th class="text-left">Task</th>
+				<th class="text-left">Requirement</th>
+				<th class="text-left">Assigned To</th>
+				<th class="text-left">Role</th>
+				<th class="text-left">Status</th>
+				<th class="text-left">Estimated Hours</th>
+				<th class="text-left">Total Hours Spent</th>
+				<th class="text-left">Remaining Hours</th>
+			</tr>
+			<% for(var i= 0; i < summaries.length; i++) { %>
+			<tr>
+				<td class="text-left"><%= summaries[i].taskDescription %></td>
+				<td class="text-left"><%= summaries[i].requirementTitle %></td>
+				<td class="text-left"><%= summaries[i].userName %></td>
+				<td class="text-left"><%= summaries[i].userRole %></td>
+				<td class="text-left"><%= summaries[i].taskStatus %></td>
+				<td class="text-left"><%= summaries[i].taskEstimatedHour %></td>
+				<td class="text-left"><%= summaries[i].taskTotalHistoricalHour %></td>
+				<td class="text-left"><%= summaries[i].taskRemainingHour %></td>
+			</tr>
+			<% } %>
+		</table>
+
+		<br>
+
+		<table>
+			<h3><b><u>Task Information</u></b></h3>
+			<tr>
+				<th class="text-left">Task ID</th>
+				<th class="text-left">Title</th>
+				<th class="text-left">Description</th>
+			</tr>
+			<% for(var i=0; i < tasks.length; i++) { %>
+			<tr>
+				<td class="text-left"><%= tasks[i].id %></th>
+				<td class="text-left"><%= tasks[i].title %></th>
+				<td class="text-left"><%= tasks[i].description %></th>
+			</tr>
+			<% } %>
+		</table>
+
+		<br>
+
+		<table>
+			<h3><b><u>Requirement Information</u></b></h3>
+			<tr>
+				<th class="text-left">Requirement ID</th>
+				<th class="text-left">Title</th>
+				<th class="text-left">Description</th>
+			</tr>
+			<% for(var i=0; i < requirements.length; i++) { %>
+			<tr>
+				<td class="text-left"><%= requirements[i].id %></th>
+				<td class="text-left"><%= requirements[i].title %></th>
+				<td class="text-left"><%= requirements[i].description %></th>
+			</tr>
+			<% } %>
+		</table>
+
+	</div>
+
+	<!-- prepare a DOM container with width and height -->
+	<div id="echart_main" class="report-body" style="width: 600px;height:400px;"></div>
+
+	<!-- include ECharts file -->
+	<script src="/echarts.min.js"></script>
+	<script type="text/javascript">
+		// based on prepared DOM, initialize echarts instance
+		var myChart = echarts.init(document.getElementById('echart_main'));
+
+		// use configuration item and data specified to show chart
+		myChart.setOption(<%- JSON.stringify(burndownChartOption) %>);
+	</script>
+</body>
+
+</html>
